@@ -1,5 +1,8 @@
+const FRAME_TIME = 100
 
 
+// 0,1,2  color rgb
+// 
 export default class Life {
     constructor(life){
         this.name = life.name
@@ -7,12 +10,11 @@ export default class Life {
         this.color = '#' + Math.floor(this.gene[0]*2.56).toString(16) + Math.floor(this.gene[1]*2.56).toString(16) + Math.floor(this.gene[2]*2.56).toString(16)
     }
 
-    locate(w,h) {
+    init(w,h) {
         this.location = {
-            x: Math.floor(Math.random()*w),
-            y: Math.floor(Math.random()*h),
+            x: Math.floor(Math.random() * w),
+            y: Math.floor(Math.random() * h),
         }
-        console.log(this.location)
     }
 
     draw(ctx){
@@ -23,5 +25,17 @@ export default class Life {
         ctx.lineWidth = 1
         ctx.strokeStyle = '#00FF00'
         ctx.stroke()
+    }
+
+    moveByGene(){
+        let speed = Math.floor(this.gene[3] / 20) + 1
+        let angle = Math.floor(this.gene[4] * 3.6)
+
+        console.log(`speed: ${speed}  angle: ${angle}`)
+
+    }
+
+    update(delta,speedScale){
+
     }
 }

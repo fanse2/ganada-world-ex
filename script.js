@@ -2,6 +2,7 @@ import life from './life.js'
 
 const WORLD_WIDTH = 500
 const WORLD_HEIGHT = 500
+let lives_count = 10
 
 let lives = []
 
@@ -19,12 +20,16 @@ fetch('./app/charsOrigin.json')
 .then(res => res.json())
 .then(data=>{
     data.forEach(e=>{
+
+        if(lives_count-- <= 0)  return
+
         const l = new life(e)
-        l.locate(WORLD_WIDTH, WORLD_HEIGHT)
+        l.init(WORLD_WIDTH, WORLD_HEIGHT)
 
         lives.push(l)
+
     })
-    //console.log(chars)
+    //console.log(lives)
 
 
 
@@ -33,11 +38,15 @@ fetch('./app/charsOrigin.json')
 
 
 function handdleStart() {
+    lastTime = null
+    speedScale = 1
+
     console.log(lives)
 
-    lives.forEach(l=>{
-        l.draw(ctx)
+    lives.forEach(life=>{
+        life.draw(ctx)
     })
+
     window.requestAnimationFrame(update)
 }
 
@@ -51,6 +60,10 @@ function update(time){
     const delta = time - lastTime
 
     //console.log(`${delta}`)
+
+    lives.forEach(life => {
+        life.update(delta, speedScale)
+    })
 
     lastTime = time
     window.requestAnimationFrame(update)
